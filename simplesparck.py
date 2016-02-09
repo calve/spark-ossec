@@ -1,6 +1,7 @@
 from pyspark import SparkContext
 from alert import Alert
 
+
 def paragraphFile(sc, path):
     """A custom reader to parse as paragraph"""
     return sc.newAPIHadoopFile(path, "org.apache.hadoop.mapreduce.lib.input.TextInputFormat",
@@ -39,8 +40,9 @@ alerts_by_ips = (alerts.filter(lambda alert: alert.src_ip is not None)  # alerts
                        .reduceByKey(lambda a, b: a+b)
                        .map(lambda alert: (alert, count_in_list(alert[1]))))  # Count each rule occurence
 
-# Find the most generated alert
+
 def mapper(item):
+    # Find the most generated alert
     src_ip, alerts = item
     res = []
     for alert, count in alerts.iteritems():
